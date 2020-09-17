@@ -1,0 +1,16 @@
+{
+  "generator-easy-ui5": {
+    "projectname": "exem",
+    "namespace": "com.tsmc",
+    "platform": "Fiori Launchpad on Cloud Foundry",
+    "viewtype": "XML",
+    "viewname": "App",
+    "ui5libs": "Content delivery network (SAPUI5)",
+    "newdir": true,
+    "namespaceURI": "com/tsmc",
+    "uimodules": [
+      "uimodule"
+    ],
+    "setupCompleted": true
+  }
+}
