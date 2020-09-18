@@ -4,5 +4,18 @@
   "logout": {
     "logoutEndpoint": "/do/logout"
   },
-  "routes": []
+  "routes": [
+    {
+      "source":"^/xsjs/(.*)$",
+      "destination":"lms_api",
+      "csrfProtection":false,
+      "authenticationType": "none"
+    },
+    {
+      "source":"^/sendgrade_wt(.*)$",
+      "destination":"lms_recording_api",
+      "csrfProtection":false,
+      "authenticationType":"none"
+    }
+  ]
 }

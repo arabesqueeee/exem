@@ -1,12 +1,164 @@
  <mvc:View controllerName="com.tsmc.exem.controller.App"
-  displayBlock="true"
-  xmlns="sap.m"
-  xmlns:mvc="sap.ui.core.mvc">
-  <App id="idAppControl" >
-    <pages>
-      <Page title="{i18n>title}">
-        <content></content>
-      </Page>
-    </pages>
-  </App>
+   xmlns:mvc="sap.ui.core.mvc"
+   xmlns="sap.uxap"
+   xmlns:layout="sap.ui.layout"
+   xmlns:m="sap.m"
+   xmlns:ui="sap.ui.table"
+   xmlns:plugins="sap.ui.table.plugins"
+	 height="100%">
+	<ObjectPageLayout id="ObjectPageLayout"
+    showTitleInHeaderContent="true"
+    showFooter="true">
+		<headerTitle>
+			<ObjectPageDynamicHeaderTitle></ObjectPageDynamicHeaderTitle>
+		</headerTitle>
+		<headerContent>
+			<m:FlexBox alignItems="Start" justifyContent="SpaceBetween">
+				<layout:HorizontalLayout class="sapUiContentPadding">
+					<m:Avatar class="sapUiSmallMarginEnd" src="./test-resources/sap/uxap/images/imageID_275314.png" displaySize="L"/>
+					<layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+						<m:Text text="{i18n>Course}"/>
+						<m:ObjectStatus title="{i18n>Ename}" text="林熙"/>
+					</layout:VerticalLayout>
+				</layout:HorizontalLayout>
+				</m:FlexBox>
+		</headerContent>
+		<sections>
+	<ObjectPageSection title="Section 2">
+				<subSections>
+					<ObjectPageSubSection title="{i18n>pageTitle}">
+						<blocks>
+							<ui:Table id="courselist1"
+              columnHeaderVisible="true"
+              class="sapUiResponsiveMargin"
+              rows="{dataModel>/courseSet}"
+              visible="true">
+          <ui:plugins>
+					<plugins:MultiSelectionPlugin
+            selectionChange="onSelectionChange"
+            id="multi"
+          />
+				</ui:plugins>
+      	<ui:extension>
+					<m:OverflowToolbar>
+
+          <m:FacetFilter
+		    	id="idFacetFilter1"
+		    	type="Simple"
+		    	showPersonalization="true"
+		    	showReset="true"
+		    	reset="handleFacetFilterReset"
+	    		confirm="handleConfirm"
+      		lists="{filter>/filterSet}" >
+			  	<m:FacetFilterList
+					title="{filter>text}"
+					key="{filter>category}"
+					mode="MultiSelect"
+					items="{path:'filter>values', templateShareable: true}" >
+			    			<m:FacetFilterItem
+							text="{filter>data}"
+							key="{filter>data}"
+					 />
+	        			</m:FacetFilterList>
+           		</m:FacetFilter>
+						<m:ToolbarSpacer/>
+            <m:Button text="{i18n>submit}"
+             type="Emphasized"
+             press="onSubmit"
+             class="sapUiSmallMarginEnd"/>
+
+					</m:OverflowToolbar>
+				</ui:extension>
+								<ui:columns>
+									<ui:Column
+                    filterProperty="CPNT_SOUR_TYP">
+                   <m:Label text="{i18n>CPNT_SOUR_TYP}" />
+										<ui:template>
+											<m:Text text="{dataModel>CPNT_SOUR_TYP}"/>
+										</ui:template>
+									</ui:Column  >
+									<ui:Column
+                  filterProperty="ACT_CPNT_ID">
+                    <m:Label text="{i18n>ACT_CPNT_ID}" />
+										<ui:template>
+											<m:Text text="{dataModel>ACT_CPNT_ID}"/>
+										</ui:template>
+									</ui:Column>
+                  	<ui:Column
+                     filterProperty="CPNT_TITLE_TW">
+                     <m:Label text="{i18n>CPNT_TITLE_TW}" />
+										<ui:template>
+											<m:Text text="{dataModel>CPNT_TITLE_TW}"/>
+										</ui:template>
+									</ui:Column>
+                  	<ui:Column
+                    filterProperty="STUD_ID">
+                     <m:Label text="{i18n>STUD_ID}" />
+										<ui:template>
+											<m:Text text="{dataModel>STUD_ID}"/>
+										</ui:template>
+									</ui:Column>
+                   	<ui:Column
+                      filterProperty="NAME">
+                   <m:Label text="{i18n>NAME}" />
+										<ui:template>
+											<m:Text text="{dataModel>NAME}"/>
+										</ui:template>
+									</ui:Column>
+                   	<ui:Column
+                      filterProperty="CPNT_SOUR_SUBTYPID">
+                   <m:Label text="{i18n>CPNT_SOUR_SUBTYPID}" />
+										<ui:template>
+											<m:Text text="{dataModel>CPNT_SOUR_SUBTYPID}"/>
+										</ui:template>
+									</ui:Column>
+                   	<ui:Column
+                      filterProperty="CPNT_SOUR_SUBTYP">
+                   <m:Label text="{i18n>CPNT_SOUR_SUBTYP}" />
+										<ui:template>
+											<m:Text text="{dataModel>CPNT_SOUR_SUBTYP}"/>
+										</ui:template>
+									</ui:Column>
+                   	<ui:Column
+                     filterProperty="REQU_DATE">
+                   <m:Label text="{i18n>REQU_DATE}" />
+										<ui:template>
+											<m:Text text="{dataModel>REQU_DATE}"/>
+										</ui:template>
+                    	</ui:Column>
+                      	<ui:Column
+                          filterProperty="SUB_RECORD_LRNGEVT">
+                       <m:Label text="{i18n>SUB_RECORD_LRNGEVT}" />
+										<ui:template>
+											<m:Text text="{dataModel>SUB_RECORD_LRNGEVT}"/>
+										</ui:template>
+                    	</ui:Column>
+                       <ui:Column
+                        filterProperty="EXEMPTION"
+                        visible="{= ${dataModel>ERROR} !== null }">
+                       <m:Label text="{i18n>error}" />
+										<ui:template>
+											<m:Text text="{dataModel>ERROR}"/>
+										</ui:template>
+									</ui:Column>
+							  </ui:columns>
+							</ui:Table>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+
+			</ObjectPageSection>
+		</sections>
+    <footer id="footer">
+			<m:OverflowToolbar>
+			 	<m:Button id="messageViewBtn"
+					icon="{ path: '/', formatter: '.buttonIconFormatter' }"
+					type="{ path: '/', formatter: '.buttonTypeFormatter' }"
+					text= "{path: '/', formatter: '.highestSeverityMessages' }"
+					press=".handleMessageViewPress"/>
+				<m:ToolbarSpacer/>
+        <m:Button icon="sap-icon://decline" type="Transparent" press="onDecline" />
+			</m:OverflowToolbar>
+		</footer>
+	</ObjectPageLayout>
 </mvc:View>

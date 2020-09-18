@@ -8,7 +8,7 @@ resources:
       webapp: uimodule/webapp
 framework:
   name: SAPUI5
-  version: 1.80.0
+  version: 1.81.1
   libraries:
     - name: sap.ui.core
     - name: sap.m
@@ -27,7 +27,11 @@ server:
         debug: true
         port: 1091
         xsappJson: approuter/xs-app.json
-        destinations: []
+        destinations:
+          - name: lms_api
+            url: https://tsmcdev-devspace-core-xsjs.cfapps.ap10.hana.ondemand.com
+          - name: lms_recording_api
+            url: https://e200392-iflmap.hcisbt.ap1.hana.ondemand.com/http
 builder:
   customTasks:
     -  name: "ui5-task-zipper"
