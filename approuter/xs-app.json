@@ -16,6 +16,10 @@
       "destination":"lms_recording_api",
       "csrfProtection":false,
       "authenticationType":"none"
-    }
+    },{
+		"source": "^/user(.*)$",
+		"target": "$1",
+    "destination": "user_api"
+  }
   ]
 }

@@ -18,7 +18,7 @@
 					<m:Avatar class="sapUiSmallMarginEnd" src="./test-resources/sap/uxap/images/imageID_275314.png" displaySize="L"/>
 					<layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
 						<m:Text text="{i18n>Course}"/>
-						<m:ObjectStatus title="{i18n>Ename}" text="林熙"/>
+						<m:ObjectStatus title="{i18n>Ename}"  id="ename"/>
 					</layout:VerticalLayout>
 				</layout:HorizontalLayout>
 				</m:FlexBox>

@@ -18,9 +18,24 @@ sap.ui.define([
   return Controller.extend("com.tsmc.exem.controller.App", {
     onInit(){
         this.byId("multi").setLimit(0);
+         sap.ui.getCore().userid ="";
+        var that = this;
+        $.ajax({
+            url: "/user/user",
+                     method: "GET",
+                     dataType: "json",
+                     success: function(data) {
+                      sap.ui.getCore().userid = data.id;
+                      that.byId("ename").setText(data.name.givenName);
+                     },
+                     error: function(){
+
+                     }
+        });
         this.initData();
         //set footer invisible
         this.onDecline();
+       
     },
 
     onSubmit: function(){
@@ -331,7 +346,7 @@ handleConfirm: function(oEvent){
                   };
 
                     $.ajax({
-                     url: "/xsjs/exem/userlearning_hdb.xsjs?super=T000001",
+                     url: "/xsjs/exem/userlearning_hdb.xsjs?super="+ sap.ui.getCore().userid,
                      method: "GET",
                      dataType: "json",
                      success: function(data) {
@@ -359,7 +374,7 @@ handleConfirm: function(oEvent){
                       }
 
                     $.ajax({
-                     url: "/xsjs/exem/programstatus_hdb.xsjs?super=T000001",
+                     url: "/xsjs/exem/programstatus_hdb.xsjs?super="+  sap.ui.getCore().userid,
                      method: "GET",
                      dataType: "json",
                      success: function(dataPro) {
@@ -807,3 +822,4 @@ var sortStudId = this.groupBy(jsonArray, function (item) {
     }
   });
 });
+
