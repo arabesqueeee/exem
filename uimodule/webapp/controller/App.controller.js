@@ -20,22 +20,10 @@ sap.ui.define([
         this.byId("multi").setLimit(0);
          sap.ui.getCore().userid ="";
         var that = this;
-        $.ajax({
-            url: "/user/user",
-                     method: "GET",
-                     dataType: "json",
-                     success: function(data) {
-                      sap.ui.getCore().userid = data.id;
-                      that.byId("ename").setText(data.name.givenName);
-                     },
-                     error: function(){
-
-                     }
-        });
         this.initData();
         //set footer invisible
         this.onDecline();
-       
+
     },
 
     onSubmit: function(){
@@ -259,8 +247,8 @@ handleConfirm: function(oEvent){
        var loading = i18n.getText("loading");
       var dialog = new sap.m.BusyDialog({
       text: loading
-  });
-  dialog.open();
+       });
+      dialog.open();
       //define table structure
         var totalData =[];
         var arrUserId = [], arrSourceType = [], filters={}, arrFilters=[];
@@ -344,6 +332,19 @@ handleConfirm: function(oEvent){
                          return oNewApp;
                       }
                   };
+                     $.ajax({
+                     url: "/user/user",
+                     method: "GET",
+                     dataType: "json",
+                     async:false,
+                     success: function(data) {
+                      sap.ui.getCore().userid = data.id;
+                  //    that.byId("ename").setText(data.name.givenName);
+                     },
+                     error: function(){
+
+                     }
+                  });
 
                     $.ajax({
                      url: "/xsjs/exem/userlearning_hdb.xsjs?super="+ sap.ui.getCore().userid,
@@ -563,6 +564,7 @@ var sortStudId = this.groupBy(jsonArray, function (item) {
    },
 
    onSelectionChange: function(oEvent){
+     var obj = {};
       var i18n = this.getView().getModel("i18n").getResourceBundle();
       var oPlugin = oEvent.getSource();
       // eslint-disable-next-line no-unused-vars
@@ -579,12 +581,12 @@ var sortStudId = this.groupBy(jsonArray, function (item) {
          var rowData = this.byId("courselist1").getModel("dataModel").getProperty(context[ii].sPath);
          tableData.push(rowData);
       }
-       for (var i=0;i<1;i++){
+       for (var i=0;i<aIndices.length;i++){
         if (tableData[aIndices[i]].SUB_RECORD_LRNGEVT == "N" ||
           tableData[aIndices[i]].EXEMPTION == "X")
           {
             //remove selected row
-          oPlugin.removeSelectionInterval(aIndices[i], aIndices[i]);
+          oPlugin.removeSelectionInterval(aIndices[i], aIndices[i],obj);
         sap.m.MessageToast.show(i18n.getText("tip5"));
         }
         if (tableData[aIndices[i]].SIGN == "X" ){
@@ -599,13 +601,21 @@ var sortStudId = this.groupBy(jsonArray, function (item) {
                 continue;
               }
           }
-          var obj = {};
+          obj = {};
           //判断为select or deselect
           if (oPlugin.isIndexSelected(aIndices[i])){
          //obj中添加需要已选中的list
+         if (endIndices != undefined){
           oPlugin.addSelectionInterval(aIndices[i], endIndices,obj );
+           } else {
+           oPlugin.addSelectionInterval(aIndices[i], aIndices[i],obj );
+         }
           } else {
+          if (endIndices != undefined){
           oPlugin.removeSelectionInterval(aIndices[i], endIndices,obj );
+         } else {
+            oPlugin.removeSelectionInterval(aIndices[i], aIndices[i],obj );
+         }
           }
           //對爲N的unselect
 

@@ -36,5 +36,18 @@
       "ui5-middleware-cfdestination",
       "ui5-task-zipper"
     ]
-  }
+  },
+  "description": "",
+  "main": "karma-ci.conf.js",
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arabesqueeee/exem.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arabesqueeee/exem/issues"
+  },
+  "homepage": "https://github.com/arabesqueeee/exem#readme"
 }
