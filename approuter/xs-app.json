@@ -1,16 +1,8 @@
 {
-  "welcomeFile": "/cp.portal",
-  "authenticationMethod": "none",
-  "logout": {
-    "logoutEndpoint": "/do/logout"
-  },
+  "welcomeFile": "comtsmcexem",
+  "authenticationMethod": "route",
   "routes": [
-    {
-      "source":"^/xsjs/(.*)$",
-      "destination":"lms_api",
-      "csrfProtection":false,
-      "authenticationType": "none"
-    },
+
     {
       "source":"^/sendgrade_wt(.*)$",
       "destination":"lms_recording_api",
@@ -20,6 +12,11 @@
 		"source": "^/user(.*)$",
 		"target": "$1",
     "destination": "user_api"
-  }
+  },
+  {
+      "source":"^/xsjs(.*)$",
+    	"target": "$1",
+      "destination": "user_api"
+    }
   ]
 }

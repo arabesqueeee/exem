@@ -5,12 +5,23 @@
    xmlns:m="sap.m"
    xmlns:ui="sap.ui.table"
    xmlns:plugins="sap.ui.table.plugins"
+   xmlns:core="sap.ui.core"
 	 height="100%">
 	<ObjectPageLayout id="ObjectPageLayout"
     showTitleInHeaderContent="true"
     showFooter="true">
 		<headerTitle>
-			<ObjectPageDynamicHeaderTitle></ObjectPageDynamicHeaderTitle>
+			<ObjectPageDynamicHeaderTitle>
+      <actions>
+      <m:Select id="language"
+      selectedKey="{language>/lan}"
+      change="languageChange">
+				<core:Item key="en" text="ENGLISH" />
+				<core:Item key="zh-Hans" text="简体中文" />
+				<core:Item key="tw" text="繁體中文" />
+			</m:Select>
+				</actions>
+      </ObjectPageDynamicHeaderTitle>
 		</headerTitle>
 		<headerContent>
 			<m:FlexBox alignItems="Start" justifyContent="SpaceBetween">

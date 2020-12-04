@@ -14,7 +14,6 @@ modules:
       - name: exem_destination
       - name: exem_html5_repo_runtime
       - name: uaa_UserDetail
-      - name: exem_portal
       - name: user_api
         group: destinations
         properties:
@@ -35,15 +34,6 @@ modules:
           artifacts:
             - dist/uimodule.zip
           target-path: resources/
-  - name: exem_launchpad_deployer
-    type: com.sap.portal.content
-    path: launchpad
-    deployed-after:
-      - exem_deployer
-    requires:
-      - name: exem_portal
-      - name: exem_html5_repo_host
-      - name: uaa_UserDetail
   - name: uimodule
     type: html5
     path: uimodule
@@ -85,8 +75,3 @@ resources:
       path: ./xs-security.json
       service-plan: application
       service: xsuaa
-  - name: exem_portal
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service-plan: standard
-      service: portal

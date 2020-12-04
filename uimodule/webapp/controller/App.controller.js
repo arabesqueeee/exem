@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/*eslint-disable no-unused-vars */
 /* eslint-disable no-debugger */
 sap.ui.define([
   "com/tsmc/exem/controller/BaseController",
@@ -23,7 +23,14 @@ sap.ui.define([
         this.initData();
         //set footer invisible
         this.onDecline();
+        //get current language
+        var sCurrentLocale = sap.ui.getCore().getConfiguration().getLanguage();
+        var language ={
+           lan:sCurrentLocale
+         }
 
+         var oModel = new JSONModel(language);
+         this.getView().setModel(oModel,"language");
     },
 
     onSubmit: function(){
@@ -110,7 +117,7 @@ sap.ui.define([
                             if (updatedb.comments == "X"){
                               //更新成功,更新数据并回写
                               $.ajax({
-                               url: "/xsjs/exem/userlearning_hdb.xsjs",
+                               url: "/xsjs/userlearning_hdb.xsjs",
                                method: "POST",
                                contentType: "application/json",
                                data: postdb,
@@ -123,7 +130,7 @@ sap.ui.define([
                               //更新成功,更新数据并回写
                               debugger;
                               $.ajax({
-                               url: "/xsjs/exem/programstatus_hdb.xsjs",
+                               url: "/xsjs/programstatus_hdb.xsjs",
                                method: "POST",
                                contentType: "application/json",
                                data: postdb,
@@ -248,7 +255,8 @@ handleConfirm: function(oEvent){
       var dialog = new sap.m.BusyDialog({
       text: loading
        });
-      dialog.open();
+      var language=sap.ui.getCore().getConfiguration().getLanguage();
+     dialog.open();
       //define table structure
         var totalData =[];
         var arrUserId = [], arrSourceType = [], filters={}, arrFilters=[];
@@ -275,10 +283,24 @@ handleConfirm: function(oEvent){
                          CPNT_TYP_ID: "",
                          CPNT_ID: "",
                       };
-                       if (oItem.QUAL_ID == null){
+                       if (oItem.QUAL_ID == null || oItem.QUAL_ID == ""){
                         oNewApp.CPNT_SOUR_TYP = "Item（單元課程）";
                         oNewApp.ACT_CPNT_ID = oItem.SC_CPNT_ID;
-                        oNewApp.CPNT_TITLE_TW = oItem.CPNT_TITLE_TW;
+switch (language){
+case 'en':
+  oNewApp.CPNT_TITLE_TW = oItem.CPNT_TITLE_EN;
+  break;
+  case 'zh-Hans':
+  oNewApp.CPNT_TITLE_TW = oItem.CPNT_TITLE_CN;
+  break;
+case 'tw':
+  oNewApp.CPNT_TITLE_TW = oItem.CPNT_TITLE_TW;
+ break;
+default:
+  oNewApp.CPNT_TITLE_TW = oItem.CPNT_TITLE_TW;
+}
+
+
                         oNewApp.STUD_ID = oItem.STUD_ID;
                         oNewApp.NAME = oItem.LNAME + oItem.FNAME;
                         oNewApp.REQU_DATE = oItem.REQ_DTE;
@@ -287,9 +309,21 @@ handleConfirm: function(oEvent){
                         oNewApp.SUB_RECORD_LRNGEVT = oItem.SUB_RECORD_LRNGEVT;
                         oNewApp.SIGN = "";
                       } else {
-                        oNewApp.CPNT_SOUR_TYP = "Curriculum（復合課程）";
+                        oNewApp.CPNT_SOUR_TYP = "Curriculum（複合課程）";
                         oNewApp.ACT_CPNT_ID = oItem.QUAL_ID;
-                        oNewApp.CPNT_TITLE_TW = oItem.QUAL_TITLE_TW;
+                      switch (language){
+case 'en':
+  oNewApp.CPNT_TITLE_TW = oItem.QUAL_TITLE_EN;
+  break;
+  case 'zh-Hans':
+  oNewApp.CPNT_TITLE_TW = oItem.QUAL_TITLE_CN;
+  break;
+case 'tw':
+  oNewApp.CPNT_TITLE_TW = oItem.QUAL_TITLE_TW;
+ break;
+default:
+  oNewApp.CPNT_TITLE_TW = oItem.QUAL_TITLE_TW;
+}
                         oNewApp.STUD_ID = oItem.STUD_ID;
                         oNewApp.NAME = oItem.LNAME + oItem.FNAME;
                         oNewApp.REQU_DATE = oItem.REQ_DTE;
@@ -316,10 +350,21 @@ handleConfirm: function(oEvent){
                          CPNT_TYP_ID: "",
                          CPNT_ID: "",
                       };
-                      if (oItem.RTYP_ID=="1"){
                         oNewApp.CPNT_SOUR_TYP = "Program（學程）";
                         oNewApp.ACT_CPNT_ID = oItem.PROGRAM_ID;
-                        oNewApp.CPNT_TITLE_TW = oItem.PROGRAM_TITLE_TW;
+                      switch (language){
+    case 'en':
+       oNewApp.CPNT_TITLE_TW = oItem.PROGRAM_TITLE_EN;
+       break;
+  case 'zh-Hans':
+  oNewApp.CPNT_TITLE_TW = oItem.PROGRAM_TITLE_CN;
+  break;
+case 'tw':
+  oNewApp.CPNT_TITLE_TW = oItem.PROGRAM_TITLE_TW;
+ break;
+default:
+  oNewApp.CPNT_TITLE_TW = oItem.PROGRAM_TITLE_TW;
+}
                         oNewApp.STUD_ID = oItem.STUD_ID;
                         oNewApp.NAME = oItem.LNAME + oItem.FNAME;
                         oNewApp.REQU_DATE = oItem.REQ_DTE;
@@ -330,7 +375,7 @@ handleConfirm: function(oEvent){
                         oNewApp.SUB_RECORD_LRNGEVT = oItem.SUB_RECORD_LRNGEVT;
                         oNewApp.SIGN = "";
                          return oNewApp;
-                      }
+
                   };
                      $.ajax({
                      url: "/user/user",
@@ -342,19 +387,18 @@ handleConfirm: function(oEvent){
                   //    that.byId("ename").setText(data.name.givenName);
                      },
                      error: function(){
-
                      }
                   });
 
                     $.ajax({
-                     url: "/xsjs/exem/userlearning_hdb.xsjs?super="+ sap.ui.getCore().userid,
+                     url: "/xsjs/userlearning_hdb.xsjs?super="+ sap.ui.getCore().userid,
                      method: "GET",
                      dataType: "json",
                      success: function(data) {
 
-                      for (var i=0; i<data.length; i++){
+                      for (var i=0; i<data.data.length; i++){
                          var oNewApp = {};
-                         oNewApp = newAnApp(data[i]);
+                         oNewApp = newAnApp(data.data[i]);
                            var valueUserId ={};
                           valueUserId.data = oNewApp.STUD_ID;
                           valueUserId.text = filUserId;
@@ -375,16 +419,16 @@ handleConfirm: function(oEvent){
                       }
 
                     $.ajax({
-                     url: "/xsjs/exem/programstatus_hdb.xsjs?super="+  sap.ui.getCore().userid,
+                     url: "/xsjs/programstatus_hdb.xsjs?super="+  sap.ui.getCore().userid,
                      method: "GET",
                      dataType: "json",
                      success: function(dataPro) {
-                      for ( i=0; i<dataPro.length; i++){
+                      for ( i=0; i<dataPro.data.length; i++){
                         //userlearning表中为Item和Curriculum
-                        //1 Item（單元課程）2 Program（學程）3 Curriculum（復合課程）
+                        //1 Item（單元課程）2 Program（學程）3 Curriculum（複合課程）
                         //programstatus表中爲program
                           var oNewPro = {};
-                         oNewPro = newAnPro(dataPro[i]);
+                         oNewPro = newAnPro(dataPro.data[i]);
                           valueUserId ={};
                           valueUserId.data = oNewPro.STUD_ID;
                           valueUserId.text = filUserId;
@@ -829,7 +873,26 @@ var sortStudId = this.groupBy(jsonArray, function (item) {
     },
     onDecline:function(){
         this.byId("ObjectPageLayout").setShowFooter(false);
-    }
+    },
+    languageChange:function(evt){
+			var languageSel = evt.getSource().getSelectedKey();
+			var sCurrentLocale = sap.ui.getCore().getConfiguration().getLanguage();
+			if (languageSel !== sCurrentLocale){
+                //sap.ui.getCore().getConfiguration().setLanguage(languageSel);
+                switch (languageSel){
+                    case 'en':
+                    window.location.search = "sap-language=en";
+                    break;
+                    case 'zh-Hans':
+                    window.location.search = "sap-language=zh";
+                    break;
+                    case 'tw':
+                    window.location.search = "sap-language=tw";
+                    break;
+                }
+			}
+
+		}
   });
 });
 

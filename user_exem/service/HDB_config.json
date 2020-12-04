@@ -1,0 +1,7 @@
+[{
+	"serverNode": "2897333c-f7a5-4a7b-816c-eefea6258448.hana.prod-ap10.hanacloud.ondemand.com:443",
+	"uid": "odata_grantor",
+	"pwd":"Support1",
+	"encrypt":"true",
+	"sslValidateCertificate":"false"
+}]
