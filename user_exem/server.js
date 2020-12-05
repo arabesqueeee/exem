@@ -5,22 +5,39 @@ const passport = require('passport');
 const xsenv = require('@sap/xsenv');
 const hana = require('@sap/hana-client');
 const exemObj = require('./service/zlms_app_exem');
+//var hdbext = require('@sap/hdbext');
+
 
 const JWTStrategy = require('@sap/xssec').JWTStrategy;
 const app = express();
+
+xsenv.loadEnv();
 const services = xsenv.getServices({
-	uaa: 'uaa_UserDetail'
+	uaa: 'ZTSMC_APPS_XSUAA'
 });
 
 passport.use(new JWTStrategy(services.uaa));
 
 app.use(passport.initialize());
+
+let hanaOptions = xsenv.getServices({
+	hana: {
+		plan: 'hdi-shared'
+	}
+});
+var hanaOptionsReduced = {
+	host: hanaOptions.hana.host,
+	port: hanaOptions.hana.port,
+	user: hanaOptions.hana.user,
+	password: hanaOptions.hana.password,
+	schema: hanaOptions.hana.schema
+};
+ console.log(hanaOptionsReduced); // Lists all authentication data (just for debugging)
+
+
 app.use(passport.authenticate('JWT', {
 	session: false
 }));
-
-// 载入fs模块
-const fs = require('fs');
 
 // eslint-disable-next-line no-unused-vars
 app.get('/user', function (req, res, next) {
@@ -31,29 +48,14 @@ app.get('/user', function (req, res, next) {
 });
 //hana DB
 const conn = hana.createConnection();
-
+var conn_params = {};
 // read HDB_config.json 配置文件
-fs.readFile('./service/HDB_config.json', function (err, data) {
-	if (err)
-		throw err;
 
-	var jsonObj = JSON.parse(data);
-
-	for (var i = 0, size = jsonObj.length; i < size; i++) {
-		var record = jsonObj[i];
-		var serverNode = record['serverNode'];
-		var uid = record['uid'];
-		var pwd = record['pwd'];
-		var encrypt = record['encrypt'];
-		var sslValidateCertificate = record['sslValidateCertificate'];
-
-		conn_params.serverNode = serverNode;
-		conn_params.uid = uid;
-		conn_params.pwd = pwd;
-		conn_params.encrypt = encrypt;
-		conn_params.sslValidateCertificate = sslValidateCertificate;
-	}
-});
+		conn_params.serverNode = hanaOptionsReduced.host + ":"+ hanaOptionsReduced.port ;
+		conn_params.uid = hanaOptionsReduced.user;
+		conn_params.pwd = hanaOptionsReduced.password;
+		conn_params.encrypt = "true";
+		conn_params.sslValidateCertificate = "false";
 
 var result = {
 	status: "success"

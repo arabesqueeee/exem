@@ -1,10 +1,10 @@
-ID: exem
+ID: ztsmc_lms_app_exem
 _schema-version: 3.2.0
 version: 0.0.1
 parameters:
   enable-parallel-deployments: true
 modules:
-  - name: exem
+  - name: ztsmc_lms_app_exem
     type: nodejs
     path: approuter
     parameters:
@@ -13,7 +13,7 @@ modules:
     requires:
       - name: exem_destination
       - name: exem_html5_repo_runtime
-      - name: uaa_UserDetail
+      - name: ZTSMC_APPS_XSUAA
       - name: user_api
         group: destinations
         properties:
@@ -50,7 +50,8 @@ modules:
         properties:
           url: '${default-url}'
     requires:
-      - name: uaa_UserDetail
+      - name: ZTSMC_APPS_XSUAA
+      - name: odata-hdi
 resources:
   - name: exem_destination
     type: org.cloudfoundry.managed-service
@@ -69,9 +70,15 @@ resources:
     parameters:
       service-plan: app-runtime
       service: html5-apps-repo
-  - name: uaa_UserDetail
-    type: org.cloudfoundry.existing-service
+  - name: ZTSMC_APPS_XSUAA
+    type: org.cloudfoundry.managed-service
     parameters:
       path: ./xs-security.json
       service-plan: application
       service: xsuaa
+  - name: odata-hdi
+    type: com.sap.xs.hdi-container
+    properties:
+      hdi-container-service: ${service-name}
+
+

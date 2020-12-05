@@ -10,7 +10,7 @@
   ],
   "role-templates": [
     {
-      "name": "Token_Exchange",
+      "name": "ztsmc_role_lms_exem",
       "description": "UAA",
       "scope-references": [
         "uaa.user"
