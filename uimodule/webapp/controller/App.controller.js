@@ -302,7 +302,8 @@ default:
 
 
                         oNewApp.STUD_ID = oItem.STUD_ID;
-                        oNewApp.NAME = oItem.LNAME + oItem.FNAME;
+                      //  oNewApp.NAME = oItem.LNAME + oItem.FNAME;
+                        oNewApp.NAME = oItem.FNAME;
                         oNewApp.REQU_DATE = oItem.REQ_DTE;
                         oNewApp.CPNT_TYP_ID =oItem.SC_CPNT_TYP_ID;
                         oNewApp.CPNT_ID = oItem.SC_CPNT_ID;
@@ -325,7 +326,8 @@ default:
   oNewApp.CPNT_TITLE_TW = oItem.QUAL_TITLE_TW;
 }
                         oNewApp.STUD_ID = oItem.STUD_ID;
-                        oNewApp.NAME = oItem.LNAME + oItem.FNAME;
+                     //   oNewApp.NAME = oItem.LNAME + oItem.FNAME;
+                        oNewApp.NAME = oItem.FNAME;
                         oNewApp.REQU_DATE = oItem.REQ_DTE;
                         oNewApp.CPNT_TYP_ID =oItem.SC_CPNT_TYP_ID;
                         oNewApp.CPNT_ID = oItem.SC_CPNT_ID;
@@ -366,7 +368,8 @@ default:
   oNewApp.CPNT_TITLE_TW = oItem.PROGRAM_TITLE_TW;
 }
                         oNewApp.STUD_ID = oItem.STUD_ID;
-                        oNewApp.NAME = oItem.LNAME + oItem.FNAME;
+                   //     oNewApp.NAME = oItem.LNAME + oItem.FNAME;
+                         oNewApp.NAME = oItem.FNAME;
                         oNewApp.REQU_DATE = oItem.REQ_DTE;
                         oNewApp.CPNT_SOUR_SUBTYPID = oItem.SEQ_ORDER;
                         oNewApp.CPNT_SOUR_SUBTYP = oItem.PROGRAM_SECTION_TITLE_CN;
