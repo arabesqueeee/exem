@@ -32,119 +32,137 @@ var hanaOptionsReduced = {
 	password: hanaOptions.hana.password,
 	schema: hanaOptions.hana.schema
 };
- console.log(hanaOptionsReduced); // Lists all authentication data (just for debugging)
+console.log(hanaOptionsReduced); // Lists all authentication data (just for debugging)
 
 
 app.use(passport.authenticate('JWT', {
 	session: false
 }));
 
-// eslint-disable-next-line no-unused-vars
-app.get('/user', function (req, res, next) {
-	var user = req.user;
-	var result = JSON.stringify(user);
-	// res.send(req.user.id);
-	res.send(result);
-});
 //hana DB
 const conn = hana.createConnection();
 var conn_params = {};
 // read HDB_config.json 配置文件
 
-		conn_params.serverNode = hanaOptionsReduced.host + ":"+ hanaOptionsReduced.port ;
-		conn_params.uid = hanaOptionsReduced.user;
-		conn_params.pwd = hanaOptionsReduced.password;
-		conn_params.encrypt = "true";
-		conn_params.sslValidateCertificate = "false";
+conn_params.serverNode = hanaOptionsReduced.host + ":" + hanaOptionsReduced.port;
+conn_params.uid = hanaOptionsReduced.user;
+conn_params.pwd = hanaOptionsReduced.password;
+conn_params.encrypt = "true";
+conn_params.sslValidateCertificate = "false";
 
 var result = {
 	status: "success"
 };
 
-app.get('/programstatus_hdb.xsjs',function (req,res){
-		var sqlString = exemObj.queryProgram(req, res);
-  	console.log('Selecting Data' + sqlString);
-		conn.connect(conn_params, function (err) {
-			if (err) {
-				if (err.code === 10) {
-					result.status = 'error';
-					result.message = err.message;
-					console.log('error log:', err);
-				}
-				res.status(500).send(result);
-			} else {
+// eslint-disable-next-line no-unused-vars
+app.get('/user', function (req, res, next) {
 
-				var rows = conn.exec(sqlString, function (err, rows) {
-					result.data = rows;
-					res.status(200).send(result);
-					conn.disconnect();
-				});
+	var sqlString = 'select empId from "ZSCH_ODATA"."ZTAB_EC_USER"' +
+		'where email = \'' + req.user.id + '\' limit 1';
+
+	conn.connect(conn_params, function (err) {
+		if (err) {
+			if (err.code === 10) {
+				result.status = 'error';
+				result.message = err.message;
+				console.log('error log:', err);
 			}
-		});
+			res.status(500).send(result);
+		} else {
+
+			var rows = conn.exec(sqlString, function (err, rows) {
+				result.data = rows;
+				res.status(200).send(result);
+				conn.disconnect();
+			});
+		}
+	});
 });
 
-app.post('/programstatus_hdb.xsjs',function (req,res){
-
-	 	var sqlString = exemObj.updateProgram(req, res);
-		conn.connect(conn_params, function (err) {
-			if (err) {
-				if (err.code === 10) {
-					result.status = 'error';
-					result.message = err.message;
-					console.log('error log:', err);
-				}
-				res.status(500).send(result);
-			} else {
-
-
+app.get('/programstatus_hdb.xsjs', function (req, res) {
+	var sqlString = exemObj.queryProgram(req, res);
+	console.log('Selecting Data' + sqlString);
+	conn.connect(conn_params, function (err) {
+		if (err) {
+			if (err.code === 10) {
+				result.status = 'error';
+				result.message = err.message;
+				console.log('error log:', err);
 			}
-		});
+			res.status(500).send(result);
+		} else {
+
+			var rows = conn.exec(sqlString, function (err, rows) {
+				result.data = rows;
+				res.status(200).send(result);
+				conn.disconnect();
+			});
+		}
+	});
+});
+
+app.post('/programstatus_hdb.xsjs', function (req, res) {
+
+	var sqlString = exemObj.updateProgram(req, res);
+	conn.connect(conn_params, function (err) {
+		if (err) {
+			if (err.code === 10) {
+				result.status = 'error';
+				result.message = err.message;
+				console.log('error log:', err);
+			}
+			res.status(500).send(result);
+		} else {
+
+
+		}
+	});
 
 });
 
-app.get('/userlearning_hdb.xsjs',function (req,res){
+app.get('/userlearning_hdb.xsjs', function (req, res) {
 
-		var sqlString = exemObj.queryCurriculum(req, res);
+	var sqlString = exemObj.queryCurriculum(req, res);
 
-		conn.connect(conn_params, function (err) {
-			if (err) {
-				if (err.code === 10) {
-					result.status = 'error';
-					result.message = err.message;
-					console.log('error log:', err);
-				}
-				res.status(500).send(result);
-			} else {
-
-				var rows = conn.exec(sqlString, function (err, rows) {
-					result.data = rows;
-					res.status(200).send(result);
-					conn.disconnect();
-				});
+	conn.connect(conn_params, function (err) {
+		if (err) {
+			if (err.code === 10) {
+				result.status = 'error';
+				result.message = err.message;
+				console.log('error log:', err);
 			}
-		});
+			res.status(500).send(result);
+		} else {
+
+			var rows = conn.exec(sqlString, function (err, rows) {
+				result.data = rows;
+				res.status(200).send(result);
+				conn.disconnect();
+			});
+		}
+	});
 
 });
 
-app.post('/userlearning_hdb.xsjs',function (req,res){
-		var sqlString = exemObj.updateCurriculum(req, res);
+app.post('/userlearning_hdb.xsjs', function (req, res) {
+	var sqlString = exemObj.updateCurriculum(req, res);
 
-		conn.connect(conn_params, function (err) {
-			if (err) {
-				if (err.code === 10) {
-					result.status = 'error';
-					result.message = err.message;
-					console.log('error log:', err);
-				}
-				res.status(500).send(result);
-			} else {
-				conn.exec(sqlString, function (err, rows) {
-					res.status(200).send(result);
-					conn.disconnect();
-        });
-
+	conn.connect(conn_params, function (err) {
+		if (err) {
+			if (err.code === 10) {
+				result.status = 'error';
+				result.message = err.message;
+				console.log('error log:', err);
 			}
-		});
+			res.status(500).send(result);
+		} else {
+			conn.exec(sqlString, function (err, rows) {
+				res.status(200).send(result);
+				conn.disconnect();
+			});
+
+		}
+	});
 
 });
 
