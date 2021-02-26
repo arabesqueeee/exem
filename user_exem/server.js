@@ -13,7 +13,7 @@ const app = express();
 
 xsenv.loadEnv();
 const services = xsenv.getServices({
-	uaa: 'ZTSMC_APPS_XSUAA'
+	uaa: 'exem_uaa'
 });
 
 passport.use(new JWTStrategy(services.uaa));
@@ -57,8 +57,7 @@ var result = {
 // eslint-disable-next-line no-unused-vars
 app.get('/user', function (req, res, next) {
 
-	var sqlString = 'select empId from "ZSCH_ODATA"."ZTAB_EC_USER"' +
-		'where email = \'' + req.user.id + '\' limit 1';
+	var sqlString = 'select empId from "ZSCH_ODATA"."ZTAB_EC_USER" where email = \'' + req.user.id + '\' limit 1';
 
 	conn.connect(conn_params, function (err) {
 		if (err) {
@@ -69,9 +68,12 @@ app.get('/user', function (req, res, next) {
 			}
 			res.status(500).send(result);
 		} else {
-
+      console.log(sqlString);
 			var rows = conn.exec(sqlString, function (err, rows) {
-				result.data = rows;
+        result.data = rows;
+
+        console.log(rows);
+        console.log(err);
 				res.status(200).send(result);
 				conn.disconnect();
 			});

@@ -8,12 +8,12 @@ modules:
     type: nodejs
     path: approuter
     parameters:
-      disk-quota: 512M
-      memory: 512M
+      disk-quota: 256M
+      memory: 256M
     requires:
       - name: exem_destination
       - name: exem_html5_repo_runtime
-      - name: ZTSMC_APPS_XSUAA
+      - name: exem_uaa
       - name: user_api
         group: destinations
         properties:
@@ -49,8 +49,11 @@ modules:
       - name: user_api
         properties:
           url: '${default-url}'
+    parameters:
+      disk-quota: 512M
+      memory: 512M
     requires:
-      - name: ZTSMC_APPS_XSUAA
+      - name: exem_uaa
       - name: odata-hdi
 resources:
   - name: exem_destination
@@ -70,7 +73,7 @@ resources:
     parameters:
       service-plan: app-runtime
       service: html5-apps-repo
-  - name: ZTSMC_APPS_XSUAA
+  - name: exem_uaa
     type: org.cloudfoundry.managed-service
     parameters:
       path: ./xs-security.json

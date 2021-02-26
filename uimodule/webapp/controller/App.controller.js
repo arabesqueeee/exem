@@ -386,7 +386,7 @@ default:
                      dataType: "json",
                      async:false,
                      success: function(data) {
-                      sap.ui.getCore().userid = data.id;
+                      sap.ui.getCore().userid = data.data[0].empid;
                   //    that.byId("ename").setText(data.name.givenName);
                      },
                      error: function(){
